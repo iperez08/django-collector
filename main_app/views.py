@@ -1,8 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics
-from .models import Cat, Feeding
-from .serializers import CatSerializer, FeedingSerializer
+from .models import Cat, Feeding, Toy
+from .serializers import CatSerializer, FeedingSerializer, ToySerializer
 
 # Define the home view
 class Home(APIView):
@@ -38,3 +38,23 @@ class FeedingDetail(generics.RetrieveUpdateDestroyAPIView):
   def get_queryset(self):
     cat_id = self.kwargs['cat_id']
     return Feeding.objects.filter(cat_id=cat_id)
+
+class ToyListCreate(generics.ListCreateAPIView):
+  serializer_class = ToySerializer
+  
+  def get_queryset(self):
+    cat_id = self.kwargs['cat_id']
+    return Toy.objects.filter(cat_id=cat_id)
+  
+  def perform_create(self, serializer):
+    cat_id = self.kwargs['cat_id']
+    cat = Cat.objects.get(id=cat_id)
+    serializer.save(cat=cat)
+
+class ToyDetail(generics.RetrieveUpdateDestroyAPIView):
+  serializer_class = ToySerializer
+  lookup_field = 'id'
+  
+  # def get_queryset(self):
+  #   cat_id = self.kwargs['cat_id']
+  #   return Toy.objects.filter(cat_id=cat_id)

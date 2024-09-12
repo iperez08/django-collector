@@ -38,3 +38,15 @@ class Feeding(models.Model):
   
   class Meta:
     ordering = ['-date']
+
+class Toy(models.Model):
+  name = models.CharField(max_length=50)
+  color = models.CharField(max_length=20)
+  
+  # cat = models.ForeignKey(Cat, on_delete=models.CASCADE)
+    
+  def __str__(self):
+    return self.name
+  
+  class Meta:
+    ordering = ['name']
