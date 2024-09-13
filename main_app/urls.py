@@ -1,9 +1,9 @@
 from django.urls import path
-from .views import Home, CatList, CatDetail, FeedingListCreate, FeedingDetail, ToyDetail, ToyListCreate, AddToyToCat, RemoveToyFromCat
+from .views import Home, CatList, CatDetail, FeedingListCreate, FeedingDetail,  ToyListCreate, ToyDetail, AddToyToCat, RemoveToyFromCat, CreateUserView, LoginView, VerifyUserView # additional imports
+
 
 urlpatterns = [
   path('', Home.as_view(), name='home'),
-  # new routes below 
   path('cats/', CatList.as_view(), name='cat-list'),
   path('cats/<int:id>/', CatDetail.as_view(), name='cat-detail'),
   path('cats/<int:cat_id>/feedings/', FeedingListCreate.as_view(), name='feeding-list-create'),
@@ -12,4 +12,7 @@ urlpatterns = [
   path('cats/<int:cat_id>/toys', ToyListCreate.as_view(), name='toy-list-create'),
   path('cats/<int:cat_id>/add_toy/<int:toy_id>/', AddToyToCat.as_view(), name='add-toy-to-cat'),
   path('cats/<int:cat_id>/remove_toy/<int:toy_id>/', RemoveToyFromCat.as_view(), name='remove-toy-from-cat'),
+  path('users/register/', CreateUserView.as_view(), name='register'),
+  path('users/login/', LoginView.as_view(), name='login'),
+  path('users/token/refresh/', VerifyUserView.as_view(), name='token_refresh'),
 ]
