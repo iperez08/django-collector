@@ -12,6 +12,14 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+import environ  
+import dj_database_url
+import django_heroku
+
+env = environ.Env()
+environ.Env.read_env()
+DATABASE_URL=env('DATABASE_URL')
+SECRET_KEY=env('SECRET_KEY')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +34,7 @@ SECRET_KEY = 'django-insecure-=74c=)y(wc@0%2b@y#7r+vs(jsfl=@=60m$1+3@189^)b^hghw
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1', '.herokuapp.com']
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # Adjust the port if your frontend runs on a different one
@@ -55,6 +63,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 REST_FRAMEWORK = {
@@ -105,6 +115,11 @@ WSGI_APPLICATION = 'catcollector.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
+    'default': 
+        dj_database_url.config('DATABASE_URL')
+}
+
+# DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'catcollector',
@@ -156,3 +171,5 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+django_heroku.settings(locals())
